@@ -25,18 +25,20 @@ const drawTank = function (tank, color) {
 };
 
 const updatePosition = function ({ c, angle }) {
-    c.x += Math.cos(toRadians(angle));
-    c.y += Math.sin(toRadians(angle));
+    c.x += Math.cos(toRadians(angle)) * 2;
+    c.y += Math.sin(toRadians(angle)) * 2;
+};
+
+const updateAngle = function (tank) {
+    tank.angle += 1;
 };
 
 const updateTanks = function ({ tank1, tank2 }) {
-    updatePosition(tank1);
-    updatePosition(tank2);
+    if (!r.IsKeyDown(r.KEY_UP) && !r.IsKeyDown(r.KEY_RIGHT)) updateAngle(tank1);
+    if (!r.IsKeyDown(r.KEY_W)) updateAngle(tank2);
 
-    if (r.IsKeyDown(r.KEY_RIGHT)) tank1.angle += 2;
-    if (r.IsKeyDown(r.KEY_LEFT)) tank1.angle -= 2;
-    if (r.IsKeyDown(r.KEY_A)) tank2.angle += 2;
-    if (r.IsKeyDown(r.KEY_D)) tank2.angle -= 2;
+    if (r.IsKeyDown(r.KEY_UP)) updatePosition(tank1);
+    if (r.IsKeyDown(r.KEY_W)) updatePosition(tank2);
 };
 
 module.exports = { drawTank, updateTanks };

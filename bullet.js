@@ -29,8 +29,8 @@ const updateBullets = function (tanks, SCREEN) {
     const { bullets: bullets1 } = tank1;
     const { bullets: bullets2 } = tank2;
 
-    if (r.IsKeyPressed(r.KEY_UP)) addBullet(tank1);
-    if (r.IsKeyPressed(r.KEY_W)) addBullet(tank2);
+    if (r.IsKeyPressed(r.KEY_RIGHT)) addBullet(tank1);
+    if (r.IsKeyPressed(r.KEY_D)) addBullet(tank2);
 
     updatePosition(bullets1);
     updatePosition(bullets2);
