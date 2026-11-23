@@ -1,9 +1,11 @@
 const r = require("raylib");
 const { toRadians } = require("./geometry");
 
-const updatePosition = function (bullet) {
-    bullet.x += Math.cos(toRadians(bullet.angle)) * 5;
-    bullet.y += Math.sin(toRadians(bullet.angle)) * 5;
+const updatePosition = function (bullets) {
+    for (const bullet of bullets) {
+        bullet.x += Math.cos(toRadians(bullet.angle)) * 5;
+        bullet.y += Math.sin(toRadians(bullet.angle)) * 5;
+    }
 };
 
 const addBullet = function (tank) {
@@ -18,20 +20,23 @@ const addBullet = function (tank) {
     tank.bullets.push({ x, y, radius: 4, angle: tank.angle });
 };
 
-const isBulletOutOfScreen = function (bullet) {
-    const { x, y } = bullet;
-    return x < 0 || x > 1400 || y < 0 || y > 900;
+const isOutOfScreen = function ({ x, y }, { WIDTH, HEIGHT }) {
+    return x < 0 || x > WIDTH || y < 0 || y > HEIGHT;
 };
 
-const updateBullets = function (tank) {
-    const { bullets } = tank;
-    if (r.IsKeyPressed(r.KEY_UP)) addBullet(tank);
+const updateBullets = function (tanks, SCREEN) {
+    const { tank1, tank2 } = tanks;
+    const { bullets: bullets1 } = tank1;
+    const { bullets: bullets2 } = tank2;
 
-    for (const bullet of bullets) {
-        updatePosition(bullet);
-    }
+    if (r.IsKeyPressed(r.KEY_UP)) addBullet(tank1);
+    if (r.IsKeyPressed(r.KEY_W)) addBullet(tank2);
 
-    if (bullets.length && isBulletOutOfScreen(bullets[0])) bullets.shift();
+    updatePosition(bullets1);
+    updatePosition(bullets2);
+
+    if (bullets1.length && isOutOfScreen(bullets1[0], SCREEN)) bullets1.shift();
+    if (bullets2.length && isOutOfScreen(bullets2[0], SCREEN)) bullets2.shift();
 };
 
 const drawBullets = function (bullets, color) {

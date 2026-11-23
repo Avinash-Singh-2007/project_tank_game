@@ -15,23 +15,28 @@ const drawTopCircle = function (circle, color) {
 };
 
 const drawTank = function (tank, color) {
-    drawBody(tank.outerRect, color.outerRect, tank.angle, { x: 40, y: 30 });
-    drawBody(tank.innerRect, color.innerRect, tank.angle, { x: 25, y: 15 });
-    drawBody(tank.riffle, color.riffle, tank.angle, { x: 0, y: 1 });
-    drawBody(tank.barrel, color.barrel, tank.angle, { x: -60, y: 5 });
-    drawTopCircle(tank.circle, color.circle, tank.angle);
+    const { outerRect, innerRect, riffle, barrel, circle, angle } = tank;
+
+    drawBody(outerRect, color.outerRect, angle, { x: 40, y: 30 });
+    drawBody(innerRect, color.innerRect, angle, { x: 25, y: 15 });
+    drawBody(riffle, color.riffle, angle, { x: 0, y: 1 });
+    drawBody(barrel, color.barrel, angle, { x: -60, y: 5 });
+    drawTopCircle(circle, color.circle, angle);
 };
 
-const updatePosition = function (tank) {
-    tank.coordinates.x += Math.cos(toRadians(tank.angle));
-    tank.coordinates.y += Math.sin(toRadians(tank.angle));
+const updatePosition = function ({ c, angle }) {
+    c.x += Math.cos(toRadians(angle));
+    c.y += Math.sin(toRadians(angle));
 };
 
-const updateTank = function (tank) {
-    updatePosition(tank);
+const updateTanks = function ({ tank1, tank2 }) {
+    updatePosition(tank1);
+    updatePosition(tank2);
 
-    if (r.IsKeyDown(r.KEY_RIGHT)) tank.angle += 2;
-    if (r.IsKeyDown(r.KEY_LEFT)) tank.angle -= 2;
+    if (r.IsKeyDown(r.KEY_RIGHT)) tank1.angle += 2;
+    if (r.IsKeyDown(r.KEY_LEFT)) tank1.angle -= 2;
+    if (r.IsKeyDown(r.KEY_A)) tank2.angle += 2;
+    if (r.IsKeyDown(r.KEY_D)) tank2.angle -= 2;
 };
 
-module.exports = { drawTank, updateTank };
+module.exports = { drawTank, updateTanks };
