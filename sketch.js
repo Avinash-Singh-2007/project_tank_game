@@ -19,6 +19,8 @@ const setup = function () {
 
 const update = function (world) {
     const { tanks, SCREEN } = world;
+    const { tank1, tank2 } = tanks;
+
     updateTanks(tanks);
     updateBullets(tanks, SCREEN);
 };

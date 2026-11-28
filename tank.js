@@ -30,15 +30,44 @@ const updatePosition = function ({ c, angle }) {
 };
 
 const updateAngle = function (tank) {
-    tank.angle += 1;
+    tank.angle += 0.8 * tank.direction;
+};
+
+const updateDirectionAntiClockwise = function (tank) {
+    tank.direction = -1;
+};
+
+const updateDirectionClockwise = function (tank) {
+    tank.direction = 1;
+};
+
+const updateTank1 = function (tank) {
+    const isMoving = r.IsKeyDown(r.KEY_W);
+    const isFiring = r.IsKeyDown(r.KEY_D);
+    const isRotatingReverse = r.IsKeyDown(r.KEY_A);
+
+    if (isRotatingReverse) updateDirectionAntiClockwise(tank);
+    if (r.IsKeyReleased(r.KEY_A)) updateDirectionClockwise(tank);
+
+    if (!isMoving && !isFiring) updateAngle(tank);
+    if (isMoving) updatePosition(tank);
+};
+
+const updateTank2 = function (tank) {
+    const isMoving = r.IsKeyDown(r.KEY_UP);
+    const isFiring = r.IsKeyDown(r.KEY_RIGHT);
+    const isRotatingReverse = r.IsKeyDown(r.KEY_LEFT);
+
+    if (isRotatingReverse) updateDirectionAntiClockwise(tank);
+    if (r.IsKeyReleased(r.KEY_LEFT)) updateDirectionClockwise(tank);
+
+    if (!isMoving && !isFiring) updateAngle(tank);
+    if (isMoving) updatePosition(tank);
 };
 
 const updateTanks = function ({ tank1, tank2 }) {
-    if (!r.IsKeyDown(r.KEY_UP) && !r.IsKeyDown(r.KEY_RIGHT)) updateAngle(tank1);
-    if (!r.IsKeyDown(r.KEY_W)) updateAngle(tank2);
-
-    if (r.IsKeyDown(r.KEY_UP)) updatePosition(tank1);
-    if (r.IsKeyDown(r.KEY_W)) updatePosition(tank2);
+    updateTank1(tank1);
+    updateTank2(tank2);
 };
 
 module.exports = { drawTank, updateTanks };
